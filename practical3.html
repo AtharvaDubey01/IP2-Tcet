@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practical Demo</title>
+  <style>
+    .post {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>JavaScript Practical Demo</h1>
+
+  <h2>setTimeout and setInterval Demo</h2>
+  <div id="timer-output"></div>
+
+  <h2>Fetching Data from API</h2>
+  <div id="posts-container"></div>
+
+  <script>
+    // Using setTimeout to execute a function after 3 seconds
+    setTimeout(() => {
+      document.getElementById('timer-output').innerText = "This message is displayed after 3 seconds.";
+    }, 3000);
+
+    // Using setInterval to execute a function every 2 seconds
+    let count = 0;
+    const intervalId = setInterval(() => {
+      count++;
+      console.log(`This message is displayed every 2 seconds. Count: ${count}`);
+
+      // Stop the interval after 5 repetitions
+      if (count === 5) {
+        clearInterval(intervalId);
+        console.log("Interval stopped.");
+      }
+    }, 2000);
+
+    // Fetch data from the API
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(response => response.json())
+      .then(data => {
+        const postsContainer = document.getElementById('posts-container');
+        
+        // Loop through the posts and display them dynamically
+        data.slice(0, 5).forEach(post => { // Limiting to 5 posts for brevity
+          const postDiv = document.createElement('div');
+          postDiv.classList.add('post');
+          
+          postDiv.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.body}</p>
+          `;
+          
+          postsContainer.appendChild(postDiv);
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+      });
+  </script>
+
+</body>
+</html>
